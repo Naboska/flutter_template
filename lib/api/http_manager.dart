@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_template/blocs/user/user_bloc.dart';
 
 import 'package:flutter_template/constants/env.dart';
 
@@ -23,7 +24,8 @@ class HttpManager {
   }
 
   _onError(DioError error, ErrorInterceptorHandler handler) {
-    //if (error.response?.statusCode == 401) AuthenticationBloc().logout();
+    UserBloc().dispatch(UserRemoveEvent());
+    if (error.response?.statusCode == 401) UserBloc().dispatch(UserRemoveEvent());
 
     return handler.next(error);
   }

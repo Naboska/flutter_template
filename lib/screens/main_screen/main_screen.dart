@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_template/screens/auth_screen/auth_screen.dart';
 
 class MainScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class MainScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const AuthScreen(title: 'Flutter Demo Home Page'),
+      home: AuthScreen(),
     );
   }
 }

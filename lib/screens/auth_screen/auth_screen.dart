@@ -1,47 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/blocs/user/user_bloc.dart';
 
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({Key? key, required this.title}) : super(key: key);
+class AuthScreen extends StatelessWidget {
+  final UserBloc userBloc = UserBloc();
 
-  final String title;
-
-  @override
-  State<AuthScreen> createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  AuthScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Title'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: StreamBuilder<UserState>(
+          initialData: userBloc.state,
+          stream: userBloc.stream,
+          builder: (context, snapshot) {
+            return const Text('in stream');
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
