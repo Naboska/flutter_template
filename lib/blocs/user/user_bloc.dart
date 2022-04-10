@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_template/repositories/auth/user_auth_repository.dart';
 import 'package:flutter_template/models/auth/user.dart';
+import 'package:flutter_template/repositories/auth/user_auth_repository.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';

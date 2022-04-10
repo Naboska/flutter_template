@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_template/blocs/user/user_bloc.dart';
 
+import 'package:flutter_template/blocs/user/user_bloc.dart';
 import 'package:flutter_template/constants/env.dart';
 
 class HttpManager {

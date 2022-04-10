@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'other_event.dart';
-
 part 'other_state.dart';
 
 class OtherBloc extends Bloc<OtherEvent, OtherState> {

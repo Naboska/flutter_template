@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_template/blocs/user/user_bloc.dart';
 
 class AuthScreen extends StatelessWidget {
