@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_template/screens/auth_screen/auth_screen.dart';
 
 class MainScreen extends StatelessWidget {
