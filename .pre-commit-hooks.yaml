@@ -1,0 +1,6 @@
+-   id: flutter-precommit
+    name: Pre-commit hook for Flutter
+    description: Executes the Flutter pre-commit checks
+    entry: ./flutter-pre-commit.sh
+    language: script
+    files: \.dart$
