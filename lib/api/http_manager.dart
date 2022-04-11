@@ -24,8 +24,8 @@ class HttpManager {
   }
 
   _onError(DioError error, ErrorInterceptorHandler handler) {
-    UserBloc().dispatch(UserRemoveEvent());
-    if (error.response?.statusCode == 401) UserBloc().dispatch(UserRemoveEvent());
+    UserBloc().add(UserRemoveEvent());
+    if (error.response?.statusCode == 401) UserBloc().add(UserRemoveEvent());
 
     return handler.next(error);
   }
