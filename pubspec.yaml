@@ -17,6 +17,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
+  bloc_concurrency: ^0.2.0
 
 dev_dependencies:
   flutter_test:

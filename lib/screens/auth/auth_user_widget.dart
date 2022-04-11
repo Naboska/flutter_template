@@ -10,8 +10,10 @@ class AuthUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      print(state.status);
-      return const Text('in stream');
+      final status = state.status;
+
+      print(status);
+      return Text(status.toString());
     });
   }
 }
