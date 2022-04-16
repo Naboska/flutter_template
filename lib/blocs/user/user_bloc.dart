@@ -14,10 +14,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late final UnauthorizedInterceptor _unauthorizedInterceptor;
 
   UserBloc() : super(const UserState(status: UserStatus.loading)) {
+    _unauthorizedInterceptor = UnauthorizedInterceptor(() => add(UserRemoveEvent()));
+
     on<UserEvent>(_mapUserEventToState, transformer: sequential());
 
     add(UserInitializeEvent());
-    _unauthorizedInterceptor = UnauthorizedInterceptor(() => add(UserRemoveEvent()));
   }
 
   @override
