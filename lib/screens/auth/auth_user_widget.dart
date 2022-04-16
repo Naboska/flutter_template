@@ -5,10 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/blocs/user/user_bloc.dart';
 import 'package:flutter_template/widgets/shared/possible_widget/possible_widget.dart';
 
-class A {
-  final a = 1;
-}
-
 class AuthUserWidget extends StatelessWidget {
   const AuthUserWidget({Key? key}) : super(key: key);
 
