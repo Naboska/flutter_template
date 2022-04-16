@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 
-import 'package:flutter_template/constants/env.dart';
-
 class HttpManager {
   final Dio _dio = Dio();
   static String? token;
