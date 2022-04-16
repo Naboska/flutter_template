@@ -6,16 +6,12 @@ import 'package:flutter_template/models/auth/user.dart';
 import 'package:flutter_template/repositories/auth/user_auth_repository.dart';
 
 part 'user_event.dart';
-
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  static UserBloc? _instance;
   final _userRepository = UserAuthRepository();
 
-  factory UserBloc() => _instance ??= UserBloc._initialize();
-
-  UserBloc._initialize() : super(const UserState(status: UserStatus.loading)) {
+  UserBloc() : super(const UserState(status: UserStatus.loading)) {
     on<UserEvent>(_mapUserEventToState, transformer: sequential());
 
     add(UserInitializeEvent());

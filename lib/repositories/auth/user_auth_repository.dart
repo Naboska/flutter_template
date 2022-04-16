@@ -1,7 +1,7 @@
-import 'package:flutter_template/api/http_manager.dart';
+import 'package:flutter_template/api/http_managers.dart';
 
 class UserAuthRepository {
-  final _client = HttpManager().client;
+  final _client = apiManager.client;
 
   handleLogin() async {
     final response = await _client.get('/');

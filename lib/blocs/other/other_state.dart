@@ -4,11 +4,8 @@ enum OtherStatus { initial, success, error, loading }
 
 extension OtherStatusX on OtherStatus {
   bool get isInitial => this == OtherStatus.initial;
-
   bool get isSuccess => this == OtherStatus.success;
-
   bool get isError => this == OtherStatus.error;
-
   bool get isLoading => this == OtherStatus.loading;
 }
 
