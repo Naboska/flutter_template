@@ -2,23 +2,28 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_template/api/interceptors/unauthorized_interceptor.dart';
 import 'package:flutter_template/models/auth/user.dart';
 import 'package:flutter_template/repositories/auth/user_auth_repository.dart';
 
 part 'user_event.dart';
-
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  static UserBloc? _instance;
-  final _userRepository = UserAuthRepository();
+  final UserAuthRepository _userRepository = UserAuthRepository();
+  late final UnauthorizedInterceptor _unauthorizedInterceptor;
 
-  factory UserBloc() => _instance ??= UserBloc._initialize();
-
-  UserBloc._initialize() : super(const UserState(status: UserStatus.loading)) {
+  UserBloc() : super(const UserState(status: UserStatus.loading)) {
     on<UserEvent>(_mapUserEventToState, transformer: sequential());
 
     add(UserInitializeEvent());
+    _unauthorizedInterceptor = UnauthorizedInterceptor(() => add(UserRemoveEvent()));
+  }
+
+  @override
+  Future<void> close() {
+    _unauthorizedInterceptor.remove();
+    return super.close();
   }
 
   void _mapUserEventToState(UserEvent event, Emitter<UserState> emit) async {

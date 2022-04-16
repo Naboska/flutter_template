@@ -1,14 +1,11 @@
 import 'package:dio/dio.dart';
 
-import 'package:flutter_template/blocs/user/user_bloc.dart';
-import 'package:flutter_template/constants/env.dart';
-
 class HttpManager {
   final Dio _dio = Dio();
   static String? token;
 
-  HttpManager() {
-    _dio.options.baseUrl = Env.clientUrl;
+  HttpManager(String baseUrl) {
+    _dio.options.baseUrl = baseUrl;
     _dio.interceptors.add(InterceptorsWrapper(
         onRequest: _onRequest, onResponse: _onResponse, onError: _onError));
   }
@@ -24,9 +21,6 @@ class HttpManager {
   }
 
   _onError(DioError error, ErrorInterceptorHandler handler) {
-    UserBloc().add(UserRemoveEvent());
-    if (error.response?.statusCode == 401) UserBloc().add(UserRemoveEvent());
-
     return handler.next(error);
   }
 
