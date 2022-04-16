@@ -23,7 +23,6 @@ class _Interceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    callback();
     if (err.response?.statusCode == 401) callback();
 
     return handler.next(err);
