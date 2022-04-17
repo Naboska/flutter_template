@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
 
-import '../http_managers.dart';
+import '../http_manager.dart';
 
 class UnauthorizedInterceptor {
-  final Dio client = apiManager.client;
+  final HttpManager httpManager = HttpManager();
   late final Interceptor _interceptor;
 
   UnauthorizedInterceptor(Function callback) {
     _interceptor = _Interceptor(callback);
-    client.interceptors.add(_interceptor);
+    httpManager.apiClient.interceptors.add(_interceptor);
   }
 
   void remove() {
-    client.interceptors.remove(_interceptor);
+    httpManager.apiClient.interceptors.remove(_interceptor);
   }
 }
 
