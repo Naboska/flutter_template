@@ -4,8 +4,9 @@ class HttpInstance {
   final Dio _dio = Dio();
   static String? token;
 
-  HttpInstance(String baseUrl) {
+  HttpInstance({required String baseUrl, Map<String, dynamic>? headers}) {
     _dio.options.baseUrl = baseUrl;
+    _dio.options.headers = headers;
     _dio.interceptors.add(InterceptorsWrapper(
         onRequest: _onRequest, onResponse: _onResponse, onError: _onError));
   }
