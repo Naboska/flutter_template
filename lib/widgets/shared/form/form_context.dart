@@ -3,9 +3,10 @@ part of 'form_widget.dart';
 class FormProvider extends InheritedWidget {
   final FormFields fields;
   final FormErrorValues errors;
-  final FormStateValues formState;
+  final FormStateValuesSubject formState;
   final FormSetValueHandler setValue;
   final FormSetErrorHandler setError;
+  final FormFieldRegisterHandler register;
 
   const FormProvider(
       {Key? key,
@@ -13,6 +14,7 @@ class FormProvider extends InheritedWidget {
       required this.fields,
       required this.errors,
       required this.formState,
+      required this.register,
       required this.setError,
       required this.setValue})
       : super(key: key, child: child);

@@ -4,6 +4,8 @@ class _FormState extends State<FormWidget> {
   @override
   void dispose() {
     widget._fields.forEach((_, subject) => subject.close());
+    widget._formState.close();
+    widget._errors.close();
     super.dispose();
   }
 
@@ -14,6 +16,7 @@ class _FormState extends State<FormWidget> {
       fields: widget._fields,
       errors: widget._errors,
       formState: widget._formState,
+      register: widget._register,
       setValue: widget._setValue,
       setError: widget._setError,
     );

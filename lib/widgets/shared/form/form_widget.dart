@@ -10,9 +10,13 @@ class FormWidget extends StatefulWidget {
   final Widget child;
   final FormFields _fields = {};
   final FormErrorValues _errors = _FormSubject({});
-  final FormStateValues _formState = _FormSubject(const _FormStateValues());
+  final FormStateValuesSubject _formState = _FormSubject(const _FormStateValues());
 
   FormWidget({Key? key, required this.child}) : super(key: key);
+
+  _FormSubject _register({required String name}) {
+    return _fields[name] ??= _FormSubject(null);
+  }
 
   void _setValue(
       {required String name,
