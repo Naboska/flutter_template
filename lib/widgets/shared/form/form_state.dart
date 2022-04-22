@@ -12,7 +12,7 @@ class _FormState extends State<FormWidget> {
   @override
   Widget build(BuildContext context) {
     return FormProvider(
-      child: widget.child,
+      child: Column(children: widget.children),
       fields: widget._fields,
       errors: widget._errors,
       formState: widget._formState,

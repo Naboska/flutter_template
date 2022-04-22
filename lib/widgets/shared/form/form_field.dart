@@ -70,7 +70,6 @@ class _FormFieldState extends State<FormFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(_watchFields);
     return widget.builder(_watchFields, _setValue, _formState);
   }
 }

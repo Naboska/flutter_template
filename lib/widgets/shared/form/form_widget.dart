@@ -7,12 +7,12 @@ part 'form_context.dart';
 part 'types.dart';
 
 class FormWidget extends StatefulWidget {
-  final Widget child;
+  final List<Widget> children;
   final FormFields _fields = {};
   final FormErrorValues _errors = _FormSubject({});
   final FormStateValuesSubject _formState = _FormSubject(const _FormStateValues());
 
-  FormWidget({Key? key, required this.child}) : super(key: key);
+  FormWidget({Key? key, required this.children}) : super(key: key);
 
   _FormSubject _register({required String name}) {
     return _fields[name] ??= _FormSubject(null);

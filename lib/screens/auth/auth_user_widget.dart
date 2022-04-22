@@ -21,19 +21,32 @@ class AuthUserWidget extends StatelessWidget {
                 width: 400,
                 height: 400,
                 child: Column(children: <Widget>[
-                  FormWidget(
-                      child: FormFieldWidget(
-                          name: 'kek',
-                          watch: const ['kek2', 'kek'],
-                          builder: (FormFieldValues values,
-                              FormFieldSetHandler setValue,
-                              FormStateValues formState) {
-                            return TextField(
-                              onChanged: setValue,
-                              decoration: InputDecoration(
-                                  counter: Text(values['kek'].toString())),
-                            );
-                          })),
+                  FormWidget(children: [
+                    FormFieldWidget(
+                        name: 'kek',
+                        builder: (FormFieldValues values,
+                            FormFieldSetHandler setValue,
+                            FormStateValues formState) {
+                          return TextField(
+                            onChanged: setValue,
+                            decoration: InputDecoration(
+                                counter: Text(values['kek'].toString())),
+                          );
+                        }),
+                    FormFieldWidget(
+                        name: 'kek2',
+                        watch: ['kek'],
+                        builder: (FormFieldValues values,
+                            FormFieldSetHandler setValue,
+                            FormStateValues formState) {
+                          print('render');
+                          return TextField(
+                            onChanged: setValue,
+                            decoration: InputDecoration(
+                                counter: Text(values['kek'].toString())),
+                          );
+                        }),
+                  ]),
                   if (status.isLoading) const CircularProgressIndicator(),
                   if (status.isError) const Text('Oops... error:(')
                 ]),
