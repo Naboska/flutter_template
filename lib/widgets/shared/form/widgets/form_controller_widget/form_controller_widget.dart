@@ -7,15 +7,15 @@ part 'form_controller_state.dart';
 
 part 'form_controller_state_mixin.dart';
 
-typedef TLifeCycleFn = Function(FormControllerState state);
-typedef TBuilderFn = Function(FormControllerState state, BuildContext context);
+typedef TFormControllerLifeCycleFn = Function(FormControllerState state);
+typedef TFormControllerBuilderFn = Function(FormControllerState state, BuildContext context);
 
 class FormController extends StatefulWidget {
   final String name;
-  final TLifeCycleFn? onInit;
-  final TLifeCycleFn? onUpdate;
-  final TLifeCycleFn? onDispose;
-  final TBuilderFn builder;
+  final TFormControllerLifeCycleFn? onInit;
+  final TFormControllerLifeCycleFn? onUpdate;
+  final TFormControllerLifeCycleFn? onDispose;
+  final TFormControllerBuilderFn builder;
 
   const FormController(
       {Key? key,

@@ -2,8 +2,14 @@ part of 'form_widget.dart';
 
 class _FormWidgetState extends State<FormWidget> with FormMixin {
   @override
+  void initState() {
+    super.initState();
+    _validation = widget.validation;
+  }
+
+  @override
   void dispose() {
-    _fields.forEach((_, subject) => subject.close());
+    _fields.state.forEach((_, subject) => subject.close());
     _formState.close();
     _errors.close();
 
@@ -12,12 +18,24 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
 
   void _handleSubmit() async {
     final Map<String, dynamic> values = _getValues();
-    // validate
-    const bool isValid = true;
-    // if valid
-    _formState.next(_formState.state.copyWith(isSubmitting: true));
-    if (!isNil(widget.onSubmit) && isValid) await widget.onSubmit!(values);
-    _formState.next(_formState.state.copyWith(isSubmitting: false, isSubmitted: true));
+    final Map<String, String> validate =
+        !isNil(widget.validation) ? widget.validation!(values) : {};
+    final bool isValid = validate.isEmpty;
+
+    if (isValid) {
+      _formState.next(_formState.state.copyWith(isSubmitting: true));
+
+      if (!isNil(widget.onSubmit) && isValid) await widget.onSubmit!(values);
+
+      _formState.next(
+          _formState.state.copyWith(isSubmitting: false, isSubmitted: true));
+    } else {
+      _errors.next(validate);
+
+      if (!_formState.state.isSubmitted) {
+        _formState.state.copyWith(isSubmitted: true);
+      }
+    }
   }
 
   @override

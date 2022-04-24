@@ -7,12 +7,13 @@ class _FormFieldState extends State<FormController> with FormControllerStateMixi
   void initState() {
     super.initState();
 
-    _form = FormWidget.of(context);
+    final FormContext _form = FormWidget.of(context);
+
     _field = _form.register(name: widget.name);
 
-    _subscriptions.add(_form.formState.subscribe(_formStateObserver));
-    _subscriptions.add(_form.errors.subscribe(_fieldErrorObserver));
-    _subscriptions.add(_field.subscribe(_fieldValueObserver));
+    _subscriptions.add(_form.formState.subscribe(_formStateListener));
+    _subscriptions.add(_form.errors.subscribe(_fieldErrorListener));
+    _subscriptions.add(_field.subscribe(_fieldValueListener));
 
     _lifeCycleRun(widget.onInit);
   }
@@ -35,15 +36,15 @@ class _FormFieldState extends State<FormController> with FormControllerStateMixi
     super.dispose();
   }
 
-  _lifeCycleRun(TLifeCycleFn? lifeCycle) {
+  void _lifeCycleRun(TFormControllerLifeCycleFn? lifeCycle) {
     if (!isNil(lifeCycle)) lifeCycle!(_getControllerState());
   }
 
-  _formStateObserver(FormStateValues value) {
+  void _formStateListener(FormStateValues value) {
     setState(() => _formState = value);
   }
 
-  _fieldErrorObserver(Map<String, String> errors) {
+  void _fieldErrorListener(Map<String, String> errors) {
     final errorMessage = errors[widget.name];
 
     if (errorMessage != _errorMessage) {
@@ -51,7 +52,7 @@ class _FormFieldState extends State<FormController> with FormControllerStateMixi
     }
   }
 
-  _fieldValueObserver(dynamic value) {
+  void _fieldValueListener(dynamic value) {
     setState(() => _fieldValue = value);
   }
 

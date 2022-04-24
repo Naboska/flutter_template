@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/utils/is.dart';
 
 part 'utils/form_subject.dart';
+
 part 'utils/form_mixin.dart';
+
 part 'widgets/form_context/form_provider.dart';
+
 part 'widgets/form_context/form_context.dart';
+
 part 'form_widget_state.dart';
+
 part 'form_state.dart';
+
 part 'types.dart';
-
-typedef TFormWidgetBuilder = Widget Function(
-    FormContext formContext, BuildContext buildContext);
-
-typedef TFormSubmitHandler = Future<dynamic> Function(Map<String, dynamic> values);
 
 class FormWidget extends StatefulWidget {
   final TFormWidgetBuilder builder;
   final TFormSubmitHandler? onSubmit;
+  final TFormValidation? validation;
 
-  const FormWidget({Key? key, required this.builder, this.onSubmit})
+  const FormWidget(
+      {Key? key, required this.builder, this.onSubmit, this.validation})
       : super(key: key);
 
   static FormContext of(BuildContext context) {
