@@ -1,8 +1,8 @@
-import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_template/api/interceptors/unauthorized_interceptor.dart';
+import 'package:flutter_template/api/helpers/unauthorized_interceptor.dart';
 import 'package:flutter_template/models/auth/user.dart';
 import 'package:flutter_template/repositories/auth/user_auth_repository.dart';
 
@@ -16,7 +16,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(const UserState(status: UserStatus.loading)) {
     _unauthorizedInterceptor = UnauthorizedInterceptor(() => add(UserRemoveEvent()));
 
-    on<UserEvent>(_mapUserEventToState, transformer: sequential());
+    on<UserInitializeEvent>(_handleInitializeEvent);
+    on<UserRemoveEvent>(_handleRemoveEvent);
 
     add(UserInitializeEvent());
   }
@@ -27,15 +28,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     return super.close();
   }
 
-  void _mapUserEventToState(UserEvent event, Emitter<UserState> emit) async {
-    if (event is UserInitializeEvent) {
-      await _handleInitializeEvent(emit);
-    } else if (event is UserRemoveEvent) {
-      _handleRemoveEvent(emit);
-    }
-  }
-
-  Future<void> _handleInitializeEvent(Emitter<UserState> emit) async {
+  Future<void> _handleInitializeEvent(UserInitializeEvent event, Emitter<UserState> emit) async {
     if (!state.status.isLoading) {
       emit(state.copyWith(status: UserStatus.loading));
     }
@@ -43,12 +36,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       final userResponse = await _userRepository.handleLogin();
       emit(state.copyWith(status: UserStatus.success, user: userResponse));
-    } catch (error, stacktrace) {
+    } on DioError catch(error) {
+      if (error.response?.statusCode != 401) emit(state.copyWith(status: UserStatus.error));
+    } catch (error) {
       emit(state.copyWith(status: UserStatus.error));
     }
   }
 
-  void _handleRemoveEvent(Emitter<UserState> emit) {
+  void _handleRemoveEvent(UserRemoveEvent event, Emitter<UserState> emit) {
     emit(const UserState());
   }
 }
