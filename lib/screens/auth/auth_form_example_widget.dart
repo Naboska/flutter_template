@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/widgets/shared/form/form.dart';
+
 import 'package:flutter_template/widgets/shared/fields/form_input/form_input_widget.dart';
+import 'package:flutter_template/widgets/shared/form/form.dart';
 
 class AuthFormExample extends StatelessWidget {
   const AuthFormExample({Key? key}) : super(key: key);
@@ -29,6 +30,7 @@ class AuthFormExample extends StatelessWidget {
             FormWatch(
                 watch: const ['test1', 'test2'],
                 builder: (state, formContext, context) {
+                  print(state.values);
                   return Row(
                       children: state.values.entries
                           .map<Text>((el) => Text('${el.key}: ${el.value} | '))

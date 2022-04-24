@@ -1,5 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
+import 'package:equatable/equatable.dart';
+
 import 'package:flutter_template/utils/is.dart';
 
 part 'utils/form_subject.dart';

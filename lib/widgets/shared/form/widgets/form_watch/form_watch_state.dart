@@ -18,6 +18,10 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
         void listener(value) => _fieldListener(fieldName, value);
 
         _subscriptions.add(formField.subscribe(listener));
+
+        if (!_values.keys.contains(fieldName)) {
+          setState(() { _values[fieldName] = null; });
+        }
       }
     }
   }
@@ -40,7 +44,10 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
   }
 
   void _formErrorsListener(Map<String, String> errors) {
-    setState(() => _errors..clear()..addAll(errors));
+    setState(() =>
+    _errors
+      ..clear()
+      ..addAll(errors));
   }
 
   @override
