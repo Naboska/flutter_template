@@ -5,14 +5,16 @@ typedef TFormFields = _FormSubject<Map<String, TFormFieldSubject>>;
 
 typedef FormErrorValuesType = Map<String, String>;
 typedef FormErrorValuesSubjectType = _FormSubject<FormErrorValuesType>;
-typedef TFormValidation = FormErrorValuesType Function(Map<String, dynamic> values);
+typedef TFormValidation = FormErrorValuesType Function(
+    Map<String, dynamic> values);
 
 typedef FormStateValuesSubjectType = _FormSubject<FormStateValues>;
 
-typedef FormFieldRegisterHandlerType = _FormSubject Function({required String name});
+typedef FormFieldRegisterHandlerType = _FormSubject Function(
+    {required String name});
 
 typedef FormSetValueHandlerType = void Function(
-    {required String name, required dynamic value, bool shouldValidate});
+    {required String name, required dynamic value});
 
 typedef FormSetErrorHandlerType = void Function(
     {required String name, required String message});
@@ -24,4 +26,5 @@ typedef TSubmitHandler = void Function();
 typedef TFormWidgetBuilder = Widget Function(
     FormContext formContext, BuildContext buildContext);
 
-typedef TFormSubmitHandler = Future<dynamic> Function(Map<String, dynamic> values);
+typedef TFormSubmitHandler = Future<dynamic> Function(
+    Map<String, dynamic> values);

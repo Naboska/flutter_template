@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/widgets/shared/form/widgets/form_controller_widget/form_controller_widget.dart';
+import 'package:flutter_template/widgets/shared/form/form.dart';
 
 class FormInputWidget extends StatelessWidget {
   final String name;
+  final String? label;
 
-  const FormInputWidget({Key? key, required this.name}) : super(key: key);
+  const FormInputWidget({Key? key, required this.name, this.label})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class FormInputWidget extends StatelessWidget {
 
           if (!isEqual) {
             _controller.text = nextValue;
-            _controller.selection = TextSelection(baseOffset: nextValue.length, extentOffset: nextValue.length);
+            _controller.selection = TextSelection(
+                baseOffset: nextValue.length, extentOffset: nextValue.length);
           }
         },
         onDispose: (FormControllerState state) {
@@ -30,7 +33,9 @@ class FormInputWidget extends StatelessWidget {
         builder: (FormControllerState state, BuildContext context) {
           return TextField(
               controller: _controller,
-              decoration: InputDecoration(errorText: state.errorMessage),
+              decoration: InputDecoration(
+                  label: label != null ? Text(label!) : null,
+                  errorText: state.errorMessage),
               onChanged: state.setValue);
         });
   }

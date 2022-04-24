@@ -23,7 +23,8 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
     final bool isValid = validate.isEmpty;
 
     if (isValid) {
-      _formState.next(_formState.state.copyWith(isSubmitting: true));
+      _formState
+          .next(_formState.state.copyWith(isValid: true, isSubmitting: true));
 
       if (!isNil(widget.onSubmit) && isValid) await widget.onSubmit!(values);
 
@@ -31,10 +32,7 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
           _formState.state.copyWith(isSubmitting: false, isSubmitted: true));
     } else {
       _errors.next(validate);
-
-      if (!_formState.state.isSubmitted) {
-        _formState.state.copyWith(isSubmitted: true);
-      }
+      _formState.state.copyWith(isSubmitted: true, isValid: false);
     }
   }
 

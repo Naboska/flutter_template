@@ -1,11 +1,11 @@
 part of '../form_widget.dart';
 
 mixin FormMixin {
-  TFormValidation? _validation;
   final TFormFields _fields = _FormSubject({});
   final FormErrorValuesSubjectType _errors = _FormSubject({});
   final FormStateValuesSubjectType _formState =
       _FormSubject(const FormStateValues());
+  TFormValidation? _validation;
 
   _FormSubject _register({required String name}) {
     TFormFieldSubject? field = _fields.state[name];
@@ -37,23 +37,8 @@ mixin FormMixin {
     }
   }
 
-  void _setValue(
-      {required String name,
-      required dynamic value,
-      bool shouldValidate = false}) {
+  void _setValue({required String name, required dynamic value}) {
     final field = _register(name: name);
-
-    if (_formState.state.isDirty) {
-      _formState.next(_formState.state.copyWith(isDirty: true));
-    }
-
-    if (shouldValidate) {
-      if (_errors.state.containsKey(name)) {
-        _errors.state.remove(name);
-        _errors.next(_errors.state);
-      }
-    }
-
     field.next(value);
   }
 
@@ -63,11 +48,21 @@ mixin FormMixin {
 
   void _setError({required String name, required String message}) {
     _errors.state[name] = message;
+
+    if (_formState.state.isValid) {
+      _formState.next(_formState.state.copyWith(isValid: false));
+    }
+
     _errors.next(_errors.state);
   }
 
   void _clearError({required String name}) {
     _errors.state.remove(name);
+
+    if (_errors.state.isEmpty && !_formState.state.isValid) {
+      _formState.next(_formState.state.copyWith(isValid: true));
+    }
+
     _errors.next(_errors.state);
   }
 }
