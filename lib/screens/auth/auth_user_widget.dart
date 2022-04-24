@@ -46,7 +46,7 @@ class FormExample extends StatelessWidget {
             const FormInputWidget(name: 'test3'),
             ElevatedButton(
                 onPressed: formContext.handleSubmit,
-                child: Text(formContext.formState.state.isSubmitted ? 'kek' : 'Submit')),
+                child: const Text('Submit')),
           ]);
         });
   }
