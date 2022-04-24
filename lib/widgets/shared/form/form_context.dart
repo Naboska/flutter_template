@@ -1,12 +1,12 @@
 part of 'form_widget.dart';
 
 class FormProvider extends InheritedWidget {
-  final FormFields fields;
-  final FormErrorValues errors;
-  final FormStateValuesSubject formState;
-  final FormSetValueHandler setValue;
-  final FormSetErrorHandler setError;
-  final FormFieldRegisterHandler register;
+  final FormFieldsType fields;
+  final FormErrorValuesSubjectType errors;
+  final FormStateValuesSubjectType formState;
+  final FormSetValueHandlerType setValue;
+  final FormSetErrorHandlerType setError;
+  final FormFieldRegisterHandlerType register;
 
   const FormProvider(
       {Key? key,

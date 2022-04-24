@@ -2,15 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 part 'utils/form_subject.dart';
+
 part 'form_state.dart';
+
 part 'form_context.dart';
+
 part 'types.dart';
 
 class FormWidget extends StatefulWidget {
   final List<Widget> children;
-  final FormFields _fields = {};
-  final FormErrorValues _errors = _FormSubject({});
-  final FormStateValuesSubject _formState = _FormSubject(const _FormStateValues());
+  final FormFieldsType _fields = {};
+  final FormErrorValuesSubjectType _errors = _FormSubject({});
+  final FormStateValuesSubjectType _formState =
+      _FormSubject(const _FormStateValues());
 
   FormWidget({Key? key, required this.children}) : super(key: key);
 

@@ -1,17 +1,18 @@
 part of 'form_widget.dart';
 
-typedef FormFieldSubject = _FormSubject;
-typedef FormFields = Map<String, FormFieldSubject>;
+typedef FormFieldSubjectType = _FormSubject;
+typedef FormFieldsType = Map<String, FormFieldSubjectType>;
 
-typedef FormErrorValues = _FormSubject<Map<String, String>>;
+typedef FormErrorValuesType = Map<String, String>;
+typedef FormErrorValuesSubjectType = _FormSubject<FormErrorValuesType>;
 
-typedef FormStateValues = _FormStateValues;
-typedef FormStateValuesSubject = _FormSubject<FormStateValues>;
+typedef FormStateValuesType = _FormStateValues;
+typedef FormStateValuesSubjectType = _FormSubject<FormStateValuesType>;
 
-typedef FormFieldRegisterHandler = _FormSubject Function({required String name});
+typedef FormFieldRegisterHandlerType = _FormSubject Function({required String name});
 
-typedef FormSetValueHandler = void Function(
+typedef FormSetValueHandlerType = void Function(
     {required String name, required dynamic value, bool shouldValidate});
 
-typedef FormSetErrorHandler = void Function(
+typedef FormSetErrorHandlerType = void Function(
     {required String name, required String message});
