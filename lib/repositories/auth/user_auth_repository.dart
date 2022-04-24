@@ -4,9 +4,7 @@ class UserAuthRepository {
   final HttpManager httpManager = HttpManager();
 
   handleLogin() async {
-    //TODO for test delayed
-    await Future.delayed(const Duration(seconds: 2));
-    final response = await httpManager.apiClient.get('/');
+    final response = await httpManager.apiClient.get('/api/user-info');
 
     return response;
   }
