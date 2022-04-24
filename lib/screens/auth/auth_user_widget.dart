@@ -16,17 +16,12 @@ class AuthUserWidget extends StatelessWidget {
       final status = state.status;
 
       return PossibleWidget(
-          isRender: status != UserStatus.initial,
-          child: () =>
-              SizedBox(
+          isRender: true,
+          child: () => SizedBox(
                 width: 400,
                 height: 400,
                 child: Column(children: <Widget>[
-                  FormWidget(children: [
-                    FormInputWidget(name: 'test'),
-                    FormInputWidget(name: 'test2'),
-                    Example(),
-                  ]),
+                  const FormExample(),
                   if (status.isLoading) const CircularProgressIndicator(),
                   if (status.isError) const Text('Oops... error:(')
                 ]),
@@ -35,30 +30,24 @@ class AuthUserWidget extends StatelessWidget {
   }
 }
 
-class Example extends StatefulWidget {
-  const Example({Key? key}) : super(key: key);
-
-  @override
-  State<Example> createState() => _ExampleState();
-}
-
-class _ExampleState extends State<Example> {
-  late FormProvider ctx;
-
-  @override
-  void initState() {
-    super.initState();
-
-    ctx = FormWidget.of(context);
-  }
+class FormExample extends StatelessWidget {
+  const FormExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
-          ctx.setValue(
-              name: 'test2', value: '1312');
+    return FormWidget(
+        onSubmit: (values) async {
+          print(values);
         },
-        child: Text('error'));
+        builder: (formContext, buildContext) {
+          return Column(children: [
+            const FormInputWidget(name: 'test1'),
+            const FormInputWidget(name: 'test2'),
+            const FormInputWidget(name: 'test3'),
+            ElevatedButton(
+                onPressed: formContext.handleSubmit,
+                child: Text(formContext.formState.state.isSubmitted ? 'kek' : 'Submit')),
+          ]);
+        });
   }
 }

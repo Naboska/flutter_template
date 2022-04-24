@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/widgets/shared/form/form_controller.dart';
+import 'package:flutter_template/widgets/shared/form/widgets/form_controller_widget/form_controller_widget.dart';
 
 class FormInputWidget extends StatelessWidget {
   final String name;
-  final TextEditingController _controller = TextEditingController();
 
-  FormInputWidget({Key? key, required this.name}) : super(key: key);
+  const FormInputWidget({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _controller = TextEditingController();
+
     return FormController(
         name: name,
         onInit: (FormControllerState state) {
@@ -26,7 +27,7 @@ class FormInputWidget extends StatelessWidget {
         onDispose: (FormControllerState state) {
           _controller.dispose();
         },
-        builder: (FormControllerState state) {
+        builder: (FormControllerState state, BuildContext context) {
           return TextField(
               controller: _controller,
               decoration: InputDecoration(errorText: state.errorMessage),

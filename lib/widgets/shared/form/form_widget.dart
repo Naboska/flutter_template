@@ -1,57 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/utils/is.dart';
 
 part 'utils/form_subject.dart';
-
+part 'utils/form_mixin.dart';
+part 'widgets/form_context/form_provider.dart';
+part 'widgets/form_context/form_context.dart';
+part 'form_widget_state.dart';
 part 'form_state.dart';
-
-part 'form_context.dart';
-
 part 'types.dart';
 
+typedef TFormWidgetBuilder = Widget Function(
+    FormContext formContext, BuildContext buildContext);
+
+typedef TFormSubmitHandler = Future<dynamic> Function(Map<String, dynamic> values);
+
 class FormWidget extends StatefulWidget {
-  final List<Widget> children;
-  final FormFieldsType _fields = {};
-  final FormErrorValuesSubjectType _errors = _FormSubject({});
-  final FormStateValuesSubjectType _formState =
-      _FormSubject(const _FormStateValues());
+  final TFormWidgetBuilder builder;
+  final TFormSubmitHandler? onSubmit;
 
-  FormWidget({Key? key, required this.children}) : super(key: key);
+  const FormWidget({Key? key, required this.builder, this.onSubmit})
+      : super(key: key);
 
-  _FormSubject _register({required String name}) {
-    return _fields[name] ??= _FormSubject(null);
-  }
-
-  void _setValue(
-      {required String name,
-      required dynamic value,
-      bool shouldValidate = false}) {
-    final _FormSubject field = _fields[name] ??= _FormSubject(null);
-
-    if (_formState.state.isDirty) {
-      _formState.next(_formState.state.copyWith(isDirty: true));
-    }
-
-    if (shouldValidate) {
-      if (_errors.state.containsKey(name)) {
-        _errors.state.remove(name);
-        _errors.next(_errors.state);
-      }
-    }
-
-    field.next(value);
-  }
-
-  void _setError({required String name, required String message}) {
-    _errors.state[name] = message;
-    _errors.next(_errors.state);
-  }
-
-  static FormProvider of(BuildContext context) {
+  static FormContext of(BuildContext context) {
     final ctx = context.getElementForInheritedWidgetOfExactType<FormProvider>();
-    return ctx?.widget as FormProvider;
+    final provider = ctx?.widget as FormProvider;
+    return provider.context;
   }
 
   @override
-  State<FormWidget> createState() => _FormState();
+  State<FormWidget> createState() => _FormWidgetState();
 }
