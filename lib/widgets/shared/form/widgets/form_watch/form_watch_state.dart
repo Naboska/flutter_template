@@ -1,7 +1,8 @@
 part of 'form_watch_widget.dart';
 
 class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
-  final List<Subscription> _subscriptions = [];
+  final FormSubscribeController _subscriptionController =
+      FormSubscribeController();
 
   @override
   void initState() {
@@ -9,34 +10,41 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
 
     final FormContext _form = FormWidget.of(context);
 
-    _subscriptions.add(_form.formState.subscribe(_formStateListener));
-    _subscriptions.add(_form.errors.subscribe(_formErrorsListener));
-
-    if (!isNil(widget.watch) && widget.watch!.isNotEmpty) {
-      for (String fieldName in widget.watch!) {
-        final formField = _form.register(name: fieldName);
-        void listener(value) => _fieldListener(fieldName, value);
-
-        _subscriptions.add(formField.subscribe(listener));
-
-        if (!_values.keys.contains(fieldName)) {
-          setState(() { _values[fieldName] = null; });
-        }
-      }
-    }
+    _subscriptionController.subscribe(_form.formState, _formStateListener);
+    _subscriptionController.subscribe(_form.errors, _formErrorsListener);
+    _subscriptionController.subscribe(_form.fields, _fieldsListener);
   }
 
   @override
   void dispose() {
-    for (Subscription unsubscribe in _subscriptions) {
-      unsubscribe();
-    }
+    _subscriptionController.dispose();
 
     super.dispose();
   }
 
-  void _fieldListener(String fieldName, dynamic value) {
-    setState(() => _values[fieldName] = value);
+  void _fieldsListener(Map<String, TFormFieldSubject> fields) {
+    final isControlled = widget.watch != null;
+
+    if (isControlled && widget.watch!.isEmpty) return;
+
+    for (String key in fields.keys) {
+      if (isControlled && !widget.watch!.contains(key)) continue;
+
+      final TFormFieldSubject subject = fields[key]!;
+
+      if (_subscriptionController.listeners.containsKey(subject.hashCode)) {
+        continue;
+      }
+
+      _subscriptionController.subscribe(
+          subject, (value) => _updateField(key, value));
+
+      if (!_values.containsKey(key)) _updateField(key, null);
+    }
+  }
+
+  void _updateField(String name, dynamic value) {
+    setState(() => _values[name] = value);
   }
 
   void _formStateListener(FormStateValues value) {
@@ -44,8 +52,7 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
   }
 
   void _formErrorsListener(Map<String, String> errors) {
-    setState(() =>
-    _errors
+    setState(() => _errors
       ..clear()
       ..addAll(errors));
   }

@@ -1,7 +1,7 @@
 part of 'form_controller_widget.dart';
 
 class _FormFieldState extends State<FormController> with FormControllerStateMixin {
-  final List<Subscription> _subscriptions = [];
+  final FormSubscribeController _subscriptionController = FormSubscribeController();
 
   @override
   void initState() {
@@ -11,9 +11,9 @@ class _FormFieldState extends State<FormController> with FormControllerStateMixi
 
     _field = _form.register(name: widget.name);
 
-    _subscriptions.add(_form.formState.subscribe(_formStateListener));
-    _subscriptions.add(_form.errors.subscribe(_fieldErrorListener));
-    _subscriptions.add(_field.subscribe(_fieldValueListener));
+    _subscriptionController.subscribe(_form.formState, _formStateListener);
+    _subscriptionController.subscribe(_form.errors, _fieldErrorListener);
+    _subscriptionController.subscribe(_field, _fieldValueListener);
 
     _lifeCycleRun(widget.onInit);
   }
@@ -28,10 +28,7 @@ class _FormFieldState extends State<FormController> with FormControllerStateMixi
   @override
   void dispose() {
     _lifeCycleRun(widget.onDispose);
-
-    for (Subscription unsubscribe in _subscriptions) {
-      unsubscribe();
-    }
+    _subscriptionController.dispose();
 
     super.dispose();
   }

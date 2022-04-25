@@ -5,17 +5,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_template/utils/is.dart';
 
 part 'utils/form_subject.dart';
-
 part 'utils/form_mixin.dart';
-
+part 'utils/form_subscribe_controller.dart';
 part 'widgets/form_context/form_provider.dart';
-
 part 'widgets/form_context/form_context.dart';
-
 part 'form_widget_state.dart';
-
 part 'form_state.dart';
-
 part 'types.dart';
 
 class FormWidget extends StatefulWidget {

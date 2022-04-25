@@ -10,15 +10,17 @@ mixin FormMixin {
   _FormSubject _register({required String name}) {
     TFormFieldSubject? field = _fields.state[name];
 
-    if (isNil(field)) {
+    if (field == null) {
       field = _fields.state[name] = _FormSubject(null);
 
-      if (!isNil(_validation)) {
+      if (_validation != null) {
         field.subscribe((_) => _triggerFieldValidate(name: name));
       }
+
+      Future.microtask(() => _fields.next(_fields.state));
     }
 
-    return field!;
+    return field;
   }
 
   void _triggerFieldValidate({required String name}) {
