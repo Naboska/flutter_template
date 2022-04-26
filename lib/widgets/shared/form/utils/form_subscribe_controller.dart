@@ -5,20 +5,23 @@ class FormSubscribeController {
 
   Map<int, Subscription> get listeners => _listeners;
 
-  void subscribe<T>(_FormSubject<T> subject, Function(T value) listener) {
-    final subjectHash = subject.hashCode;
+  bool isSubscribe<T>(TFormFieldSubject<T> subject) {
+    return _listeners.containsKey(subject.hashCode);
+  }
 
-    if (_listeners.containsKey(subjectHash)) removeListeners(subjectHash);
+  void subscribe<T>(TFormFieldSubject<T> subject, Function(T value) listener) {
+    if (isSubscribe(subject)) removeListeners(subject);
 
     _listeners[subject.hashCode] = subject.subscribe(listener);
   }
 
-  void removeListeners(int subjectHash) {
-    final unsubscribe = _listeners[subjectHash];
+  void removeListeners<T>(TFormFieldSubject<T> subject) {
+    final int key = subject.hashCode;
+    final Subscription? unsubscribe = _listeners[subject.hashCode];
 
     if (unsubscribe != null) {
       unsubscribe();
-      _listeners.remove(subjectHash);
+      _listeners.remove(key);
     }
   }
 

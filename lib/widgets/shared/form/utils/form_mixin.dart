@@ -1,8 +1,8 @@
 part of '../form_widget.dart';
 
 mixin FormMixin {
-  final TFormFields _fields = _FormSubject({});
-  final FormErrorValuesSubjectType _errors = _FormSubject({});
+  final TFormFieldsSubject _fields = _FormSubject({});
+  final TFormErrorSubject _errors = _FormSubject({});
   final FormStateValuesSubjectType _formState =
       _FormSubject(const FormStateValues());
   TFormValidation? _validation;
@@ -13,9 +13,13 @@ mixin FormMixin {
     if (field == null) {
       field = _fields.state[name] = _FormSubject(null);
 
-      if (_validation != null) {
-        field.subscribe((_) => _triggerFieldValidate(name: name));
-      }
+      field.subscribe((_) {
+        if (!_formState.state.isDirty) {
+          _formState.next(_formState.state.copyWith(isDirty: true));
+        }
+
+        if (_validation != null) _triggerFieldValidate(name: name);
+      });
 
       Future.microtask(() => _fields.next(_fields.state));
     }

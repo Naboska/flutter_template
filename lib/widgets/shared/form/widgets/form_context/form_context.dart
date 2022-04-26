@@ -1,8 +1,8 @@
 part of '../../form_widget.dart';
 
 class FormContext {
-  final TFormFields fields;
-  final FormErrorValuesSubjectType errors;
+  final TFormFieldsSubject fields;
+  final TFormErrorSubject errors;
   final FormStateValuesSubjectType formState;
   final FormFieldRegisterHandlerType register;
   final TSubmitHandler handleSubmit;

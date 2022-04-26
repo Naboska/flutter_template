@@ -13,15 +13,11 @@ class AuthUserWidget extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
       final status = state.status;
 
-      return SizedBox(
-        width: 400,
-        height: 400,
-        child: Column(children: <Widget>[
-          const AuthFormExample(),
-          if (status.isLoading) const CircularProgressIndicator(),
-          if (status.isError) const Text('Oops... error:(')
-        ]),
-      );
+      return Column(children: <Widget>[
+        const AuthFormExample(),
+        if (status.isLoading) const CircularProgressIndicator(),
+        if (status.isError) const Text('Oops... error:(')
+      ]);
     });
   }
 }

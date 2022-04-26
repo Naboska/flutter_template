@@ -13,7 +13,7 @@ class FormStateValues extends Equatable {
   final bool isValid;
 
   @override
-  List<Object?> get props => [isDirty, isSubmitting];
+  List<Object?> get props => [isDirty, isSubmitting, isSubmitted, isValid];
 
   FormStateValues copyWith(
       {bool? isDirty, bool? isSubmitting, bool? isSubmitted, bool? isValid}) {

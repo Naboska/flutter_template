@@ -9,6 +9,16 @@ class FormInputWidget extends StatelessWidget {
   const FormInputWidget({Key? key, required this.name, this.label})
       : super(key: key);
 
+  void _updateText(TextEditingController controller, String? value) {
+    final String nextValue = value ?? '';
+
+    if (controller.text != nextValue) {
+      controller.text = nextValue;
+      controller.selection = TextSelection(
+          baseOffset: nextValue.length, extentOffset: nextValue.length);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController _controller = TextEditingController();
@@ -19,20 +29,13 @@ class FormInputWidget extends StatelessWidget {
           _controller.text = state.value ?? '';
         },
         onUpdate: (FormControllerState state) {
-          final String nextValue = state.value ?? '';
-          final bool isEqual = _controller.text == nextValue;
-
-          if (!isEqual) {
-            _controller.text = nextValue;
-            _controller.selection = TextSelection(
-                baseOffset: nextValue.length, extentOffset: nextValue.length);
-          }
+          _updateText(_controller, state.value);
         },
         onDispose: (FormControllerState state) {
-          _controller.dispose();
+          _controller.clear();
         },
         builder: (FormControllerState state, BuildContext context) {
-          return TextField(
+          return TextFormField(
               controller: _controller,
               decoration: InputDecoration(
                   label: label != null ? Text(label!) : null,

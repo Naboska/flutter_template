@@ -1,12 +1,12 @@
 part of 'form_widget.dart';
 
-typedef TFormFieldSubject = _FormSubject<dynamic>;
-typedef TFormFields = _FormSubject<Map<String, TFormFieldSubject>>;
+typedef TFormFieldsValues = Map<String, dynamic>;
+typedef TFormFieldSubject<T> = _FormSubject<T>;
+typedef TFormFieldsSubject<T> = _FormSubject<Map<String, TFormFieldSubject<T>>>;
 
-typedef FormErrorValuesType = Map<String, String>;
-typedef FormErrorValuesSubjectType = _FormSubject<FormErrorValuesType>;
-typedef TFormValidation = FormErrorValuesType Function(
-    Map<String, dynamic> values);
+typedef TFormErrorValues = Map<String, String>;
+typedef TFormErrorSubject = _FormSubject<TFormErrorValues>;
+typedef TFormValidation = TFormErrorValues Function(TFormFieldsValues values);
 
 typedef FormStateValuesSubjectType = _FormSubject<FormStateValues>;
 
