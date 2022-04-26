@@ -1,33 +1,51 @@
 part of 'form_controller_widget.dart';
 
-class FormControllerState {
+class FormControllerWidgetState {
   final FormStateValues formState;
   final void Function(dynamic value) setValue;
+  final void Function() handleBlur;
   final dynamic value;
   final String? errorMessage;
+  final bool isTouched;
 
-  FormControllerState(
+  FormControllerWidgetState(
       {required this.setValue,
-        required this.formState,
-        required this.value,
-        required this.errorMessage});
+      required this.handleBlur,
+      required this.formState,
+      required this.value,
+      required this.isTouched,
+      required this.errorMessage});
 }
 
 mixin FormControllerStateMixin {
+  late final FormContext _form;
   late final TFormFieldSubject _field;
+  late final String _fieldName;
 
   late FormStateValues _formState;
-  dynamic _fieldValue;
+  late bool _isTouched;
+  dynamic _value;
   String? _errorMessage;
 
   _setValue(dynamic value) => _field.next(value);
 
-  FormControllerState _getControllerState() {
-    return FormControllerState(
+  _handleBlur() {
+    final bool isTouched = _form.touchedFields.state[_fieldName] == true;
+
+    if (!isTouched) {
+      _form.touchedFields.state[_fieldName] = true;
+      _form.touchedFields.next(_form.touchedFields.state);
+    }
+  }
+
+  FormControllerWidgetState getField() {
+    return FormControllerWidgetState(
       formState: _formState,
+      handleBlur: _handleBlur,
       setValue: _setValue,
       errorMessage: _errorMessage,
-      value: _fieldValue,
+      isTouched: _isTouched,
+      value: _value,
     );
   }
 }

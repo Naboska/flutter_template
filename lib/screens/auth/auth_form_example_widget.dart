@@ -26,7 +26,8 @@ class AuthFormExample extends StatelessWidget {
         builder: (formContext, buildContext) {
           return Column(children: [
             const FormInputWidget(name: 'test1', label: 'test1'),
-            const FormInputWidget(name: 'test3', label: 'test3'),
+            const FormInputWidget(name: 'test2', label: 'test2'),
+            const FormInputWidget(name: 'test3', label: 'test3dsfdsf'),
             const FormInputWidget(name: 'test3', label: 'test3'),
             FormWatch(
                 watch: const [],
@@ -67,6 +68,7 @@ class AuthFormExample extends StatelessWidget {
             FormWatch(builder: (state, formContext, context) {
               final values = state.values.entries.toList();
               final errors = state.errors.entries.toList();
+              final touched = state.touchedFields.entries.toList();
               final formState = {
                 'isDirty': state.formState.isDirty,
                 'isSubmitted': state.formState.isSubmitted,
@@ -77,6 +79,7 @@ class AuthFormExample extends StatelessWidget {
               return Column(children: [
                 _FormItems(values: formState, label: 'FormState'),
                 _FormItems(values: values, label: 'Values'),
+                _FormItems(values: touched, label: 'Touched fields'),
                 _FormItems(values: errors, label: 'Errors')
               ]);
             }),

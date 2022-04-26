@@ -17,8 +17,9 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
     _subscriptionController.subscribe(_form.formState, _formStateListener);
 
     if (!isControlled || widget.watch!.isNotEmpty) {
-      _subscriptionController.subscribe(_form.errors, _formErrorsListener);
+      _subscriptionController.subscribe(_form.errors, _errorsListener);
       _subscriptionController.subscribe(_form.fields, _fieldsListener);
+      _subscriptionController.subscribe(_form.touchedFields, _touchedListener);
     }
   }
 
@@ -42,19 +43,25 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
     setState(() => _formState = value);
   }
 
-  void _formErrorsListener(TFormErrorValues errors) {
-    final TFormErrorValues next = errors;
+  void _errorsListener(TFormErrorValues errors) {
+    _updateMapListener({...errors}, _errors);
+  }
 
+  void _touchedListener(TFormTouchedValues touchedFields) {
+    _updateMapListener({...touchedFields}, _touchedFields);
+  }
+
+  void _updateMapListener<T extends Map<String, dynamic>>(T check, T update) {
     if (isControlled) {
-      next.removeWhere((key, value) {
-        return !widget.watch!.contains(key) && _errors[key] == errors[key];
+      check.removeWhere((key, value) {
+        return !widget.watch!.contains(key) && update[key] == check[key];
       });
     }
 
-    if (!mapEquals(errors, _errors)) {
-      setState(() => _errors
+    if (!mapEquals(check, update)) {
+      setState(() => update
         ..clear()
-        ..addAll(next));
+        ..addAll(check));
     }
   }
 

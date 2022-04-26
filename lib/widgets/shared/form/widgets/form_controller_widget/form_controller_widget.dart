@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_template/utils/is.dart';
 import '../../form_widget.dart';
 
 part 'form_controller_state.dart';
-
 part 'form_controller_state_mixin.dart';
 
-typedef TFormControllerLifeCycleFn = Function(FormControllerState state);
-typedef TFormControllerBuilderFn = Function(FormControllerState state, BuildContext context);
+typedef TFormControllerLifeCycleFn = Function(FormControllerWidgetState state);
+typedef TFormControllerBuilderFn = Function(
+    FormControllerWidgetState state, BuildContext context);
 
-class FormController extends StatefulWidget {
+class FormControllerWidget extends StatefulWidget {
   final String name;
   final TFormControllerLifeCycleFn? onInit;
   final TFormControllerLifeCycleFn? onUpdate;
   final TFormControllerLifeCycleFn? onDispose;
-  final TFormControllerBuilderFn builder;
+  final TFormControllerBuilderFn? builder;
 
-  const FormController(
+  const FormControllerWidget(
       {Key? key,
-      required this.name,
-      this.onInit,
-      this.onUpdate,
-      this.onDispose,
-      required this.builder})
+        required this.name,
+        this.onInit,
+        this.onUpdate,
+        this.onDispose,
+        this.builder})
       : super(key: key);
 
+  @protected
   @override
-  State<FormController> createState() => _FormFieldState();
+  State<FormControllerWidget> createState() => FormController();
 }

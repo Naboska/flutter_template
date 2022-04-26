@@ -42,6 +42,7 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
     final FormContext _formContext = FormContext(
       fields: _fields,
       errors: _errors,
+      touchedFields: _touchedFields,
       formState: _formState,
       register: _register,
       handleSubmit: _handleSubmit,

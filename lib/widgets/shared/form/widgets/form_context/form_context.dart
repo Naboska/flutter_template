@@ -3,6 +3,7 @@ part of '../../form_widget.dart';
 class FormContext {
   final TFormFieldsSubject fields;
   final TFormErrorSubject errors;
+  final TFormTouchedSubject touchedFields;
   final FormStateValuesSubjectType formState;
   final FormFieldRegisterHandlerType register;
   final TSubmitHandler handleSubmit;
@@ -13,6 +14,7 @@ class FormContext {
   const FormContext(
       {required this.fields,
       required this.errors,
+      required this.touchedFields,
       required this.formState,
       required this.register,
       required this.handleSubmit,

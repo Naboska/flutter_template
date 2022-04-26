@@ -3,8 +3,10 @@ part of '../form_widget.dart';
 mixin FormMixin {
   final TFormFieldsSubject _fields = _FormSubject({});
   final TFormErrorSubject _errors = _FormSubject({});
+  final TFormTouchedSubject _touchedFields = _FormSubject({});
   final FormStateValuesSubjectType _formState =
       _FormSubject(const FormStateValues());
+
   TFormValidation? _validation;
 
   _FormSubject _register({required String name}) {
@@ -20,6 +22,8 @@ mixin FormMixin {
 
         if (_validation != null) _triggerFieldValidate(name: name);
       });
+
+      _setTouched(name: name, isTouched: false);
 
       Future.microtask(() => _fields.next(_fields.state));
     }
@@ -43,13 +47,20 @@ mixin FormMixin {
     }
   }
 
+  Map<String, dynamic> _getValues() {
+    return _fields.state.map((key, value) => MapEntry(key, value.state));
+  }
+
+  void _setTouched({required String name, required bool isTouched}) {
+    if (_fields.state[name] != null) {
+      _touchedFields.state[name] = isTouched;
+      _touchedFields.next(_touchedFields.state);
+    }
+  }
+
   void _setValue({required String name, required dynamic value}) {
     final field = _register(name: name);
     field.next(value);
-  }
-
-  Map<String, dynamic> _getValues() {
-    return _fields.state.map((key, value) => MapEntry(key, value.state));
   }
 
   void _setError({required String name, required String message}) {

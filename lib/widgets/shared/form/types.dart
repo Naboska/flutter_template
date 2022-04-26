@@ -8,6 +8,9 @@ typedef TFormErrorValues = Map<String, String>;
 typedef TFormErrorSubject = _FormSubject<TFormErrorValues>;
 typedef TFormValidation = TFormErrorValues Function(TFormFieldsValues values);
 
+typedef TFormTouchedValues = Map<String, bool>;
+typedef TFormTouchedSubject = _FormSubject<TFormTouchedValues>;
+
 typedef FormStateValuesSubjectType = _FormSubject<FormStateValues>;
 
 typedef FormFieldRegisterHandlerType = _FormSubject Function(
