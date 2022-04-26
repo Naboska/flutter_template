@@ -31,19 +31,16 @@ mixin FormMixin {
     return field;
   }
 
-  void _triggerFieldValidate({required String name}) {
-    if (!isNil(_validation)) {
-      final values = _getValues();
-      final Map<String, String> errors = _validation!(values);
-      final String? errorMessage = errors[name];
+  void _triggerFieldValidate({required String name}) async {
+    if (_validation == null) return;
 
-      if (errorMessage != _errors.state[name]) {
-        if (isNil(errorMessage)) {
-          _clearError(name: name);
-        } else {
-          _setError(name: name, message: errorMessage!);
-        }
-      }
+    final values = _getValues();
+    final Map<String, String> errors = await _validation!(values);
+    final String? errorMessage = errors[name];
+
+    if (errorMessage != _errors.state[name]) {
+      if (errorMessage == null) return _clearError(name: name);
+      _setError(name: name, message: errorMessage);
     }
   }
 
@@ -52,10 +49,9 @@ mixin FormMixin {
   }
 
   void _setTouched({required String name, required bool isTouched}) {
-    if (_fields.state[name] != null) {
-      _touchedFields.state[name] = isTouched;
-      _touchedFields.next(_touchedFields.state);
-    }
+    if (_fields.state[name] == null) return;
+    _touchedFields.state[name] = isTouched;
+    _touchedFields.next(_touchedFields.state);
   }
 
   void _setValue({required String name, required dynamic value}) {

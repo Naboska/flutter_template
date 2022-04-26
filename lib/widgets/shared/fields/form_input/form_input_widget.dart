@@ -17,42 +17,47 @@ class _FormInputController extends FormController<FormInputWidget> {
   final FocusNode _node = FocusNode();
 
   @override
-  controllerDidInit(FormControllerWidgetState field) {
-    _controller.text = field.value ?? '';
-
-    _node.addListener(() {
-      if (!_node.hasFocus) field.handleBlur();
-    });
+  void controllerDidInit() {
+    _controller.text = value ?? '';
+    _node.addListener(_focusListener);
   }
 
   @override
-  controllerDidUpdate(FormControllerWidgetState field) {
-    final String value = field.value ?? '';
+  void controllerDidUpdate() {
+    _textListener();
+  }
 
-    if (_controller.text != value) {
-      _controller.text = value;
-      _controller.selection =
-          TextSelection(baseOffset: value.length, extentOffset: value.length);
+  @override
+  void controllerWillDispose() {
+    _controller.clear();
+    _node.dispose();
+  }
+
+  void _focusListener() {
+    if (!_node.hasFocus) handleBlur();
+  }
+
+  void _textListener() {
+    final String _value = value ?? '';
+    final length = _value.length;
+
+    if (_controller.text != _value) {
+      final _ts = TextSelection(baseOffset: length, extentOffset: length);
+      _controller.text = _value;
+      _controller.selection = _ts;
     }
   }
 
   @override
-  controllerWillDispose(FormControllerWidgetState field) {
-    _controller.clear();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final FormControllerWidgetState field = getField();
-
-    final bool isError = field.formState.isSubmitted || field.isTouched;
+    final bool isError = formState.isSubmitted || isTouched;
 
     return TextFormField(
         focusNode: _node,
         controller: _controller,
         decoration: InputDecoration(
             label: widget.label != null ? Text(widget.label!) : null,
-            errorText: isError ? field.errorMessage : null),
-        onChanged: field.setValue);
+            errorText: isError ? errorMessage : null),
+        onChanged: setValue);
   }
 }

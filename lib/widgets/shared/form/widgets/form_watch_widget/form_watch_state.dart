@@ -10,7 +10,7 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
   void initState() {
     super.initState();
 
-    final FormContext _form = FormWidget.of(context);
+    _form = widget.formContext ?? FormWidget.of(context);
 
     isControlled = widget.watch != null;
 
@@ -72,8 +72,7 @@ class _FormWatchState extends State<FormWatch> with FormWatchStateMixin {
   @override
   Widget build(BuildContext context) {
     final FormWatchState watchState = _getWatchState();
-    final FormContext formContext = FormWidget.of(context);
 
-    return widget.builder(watchState, formContext, context);
+    return widget.builder(watchState, _form, context);
   }
 }

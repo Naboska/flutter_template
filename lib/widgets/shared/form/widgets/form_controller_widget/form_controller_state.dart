@@ -13,15 +13,15 @@ class FormController<T extends FormControllerWidget> extends State<T>
     _form = FormWidget.of(context);
     _field = _form.register(name: widget.name);
 
-    _fieldName = widget.name;
-    _isTouched = false;
+    fieldName = widget.name;
+    isTouched = false;
 
     _subscriptionController.subscribe(_form.formState, _formStateListener);
     _subscriptionController.subscribe(_form.errors, _errorListener);
     _subscriptionController.subscribe(_form.touchedFields, _touchedListener);
     _subscriptionController.subscribe(_field, _fieldValueListener);
 
-    controllerDidInit(getField());
+    controllerDidInit();
   }
 
   @protected
@@ -29,55 +29,56 @@ class FormController<T extends FormControllerWidget> extends State<T>
   void setState(VoidCallback fn) {
     super.setState(fn);
 
-    controllerDidUpdate(getField());
+    controllerDidUpdate();
   }
 
   @protected
   @override
   void dispose() {
-    controllerWillDispose(getField());
+    controllerWillDispose();
+
     _subscriptionController.dispose();
 
     super.dispose();
   }
 
-  void _formStateListener(FormStateValues value) {
-    setState(() => _formState = value);
+  void _formStateListener(FormStateValues formStateValues) {
+    setState(() => formState = formStateValues);
   }
 
   void _errorListener(TFormErrorValues errors) {
-    final errorMessage = errors[_fieldName];
+    final message = errors[fieldName];
 
-    if (errorMessage != _errorMessage) {
-      setState(() => (_errorMessage = errorMessage));
+    if (errorMessage != message) {
+      setState(() => (errorMessage = message));
     }
   }
 
   void _touchedListener(TFormTouchedValues touched) {
-    final isTouched = touched[_fieldName] ?? false;
+    final isCurrentTouched = touched[fieldName] ?? false;
 
-    if (isTouched != _isTouched) {
-      setState(() => (_isTouched = isTouched));
+    if (isTouched != isCurrentTouched) {
+      setState(() => (isTouched = isCurrentTouched));
     }
   }
 
-  void _fieldValueListener(dynamic value) {
-    setState(() => _value = value);
+  void _fieldValueListener(dynamic fieldValue) {
+    setState(() => value = fieldValue);
   }
 
   @protected
-  controllerDidInit(FormControllerWidgetState field) {
-    if (widget.onInit != null) widget.onInit!(field);
+  void controllerDidInit() {
+    if (widget.onInit != null) widget.onInit!(getField());
   }
 
   @protected
-  controllerDidUpdate(FormControllerWidgetState field) {
-    if (widget.onUpdate != null) widget.onUpdate!(field);
+  void controllerDidUpdate() {
+    if (widget.onUpdate != null) widget.onUpdate!(getField());
   }
 
   @protected
-  controllerWillDispose(FormControllerWidgetState field) {
-    if (widget.onDispose != null) widget.onDispose!(field);
+  void controllerWillDispose() {
+    if (widget.onDispose != null) widget.onDispose!(getField());
   }
 
   @override

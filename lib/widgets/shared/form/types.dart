@@ -6,7 +6,8 @@ typedef TFormFieldsSubject<T> = _FormSubject<Map<String, TFormFieldSubject<T>>>;
 
 typedef TFormErrorValues = Map<String, String>;
 typedef TFormErrorSubject = _FormSubject<TFormErrorValues>;
-typedef TFormValidation = TFormErrorValues Function(TFormFieldsValues values);
+typedef TFormValidation = Future<TFormErrorValues> Function(
+    TFormFieldsValues values);
 
 typedef TFormTouchedValues = Map<String, bool>;
 typedef TFormTouchedSubject = _FormSubject<TFormTouchedValues>;

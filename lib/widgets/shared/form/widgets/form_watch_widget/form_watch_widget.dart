@@ -13,8 +13,10 @@ typedef TFormWatchBuilderFn = Function(
 class FormWatch extends StatefulWidget {
   final List<String>? watch;
   final TFormWatchBuilderFn builder;
+  final FormContext? formContext;
 
-  const FormWatch({Key? key, this.watch, required this.builder})
+  const FormWatch(
+      {Key? key, this.watch, required this.builder, this.formContext})
       : super(key: key);
 
   @override

@@ -14,6 +14,7 @@ class FormWatchState {
 }
 
 mixin FormWatchStateMixin {
+  late final FormContext _form;
   final Map<String, dynamic> _values = {};
   final TFormErrorValues _errors = {};
   final TFormTouchedValues _touchedFields = {};

@@ -10,14 +10,18 @@ class AuthUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      final status = state.status;
-
-      return Column(children: <Widget>[
+    return Column(
+      children: [
         const AuthFormExample(),
-        if (status.isLoading) const CircularProgressIndicator(),
-        if (status.isError) const Text('Oops... error:(')
-      ]);
-    });
+        BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+          final status = state.status;
+
+          return Column(children: <Widget>[
+            if (status.isLoading) const CircularProgressIndicator(),
+            if (status.isError) const Text('Oops... error:(')
+          ]);
+        }),
+      ],
+    );
   }
 }

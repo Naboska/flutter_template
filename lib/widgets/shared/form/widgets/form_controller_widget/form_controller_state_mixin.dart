@@ -20,32 +20,32 @@ class FormControllerWidgetState {
 mixin FormControllerStateMixin {
   late final FormContext _form;
   late final TFormFieldSubject _field;
-  late final String _fieldName;
+  late final String fieldName;
 
-  late FormStateValues _formState;
-  late bool _isTouched;
-  dynamic _value;
-  String? _errorMessage;
+  late FormStateValues formState;
+  late bool isTouched;
+  dynamic value;
+  String? errorMessage;
 
-  _setValue(dynamic value) => _field.next(value);
+  void setValue(dynamic value) => _field.next(value);
 
-  _handleBlur() {
-    final bool isTouched = _form.touchedFields.state[_fieldName] == true;
+  void handleBlur() {
+    final bool isTouched = _form.touchedFields.state[fieldName] == true;
 
     if (!isTouched) {
-      _form.touchedFields.state[_fieldName] = true;
+      _form.touchedFields.state[fieldName] = true;
       _form.touchedFields.next(_form.touchedFields.state);
     }
   }
 
   FormControllerWidgetState getField() {
     return FormControllerWidgetState(
-      formState: _formState,
-      handleBlur: _handleBlur,
-      setValue: _setValue,
-      errorMessage: _errorMessage,
-      isTouched: _isTouched,
-      value: _value,
+      formState: formState,
+      handleBlur: handleBlur,
+      setValue: setValue,
+      errorMessage: errorMessage,
+      isTouched: isTouched,
+      value: value,
     );
   }
 }
