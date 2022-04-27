@@ -4,8 +4,12 @@ import 'form_subject.dart';
 class FormFieldsSubject extends FormSubject<Map<String, FormFieldSubject>> {
   FormFieldsSubject() : super({});
 
-  FormFieldSubject createField({required String name}) {
-    return getField(name) ?? (state[name] = FormFieldSubject());
+  FormFieldSubject createField({required String name, dynamic initialValue}) {
+    final field = getField(name);
+
+    if (field != null) return field;
+
+    return (state[name] = FormFieldSubject(initialValue: initialValue));
   }
 
   FormFieldSubject? getField(String name) => state[name];

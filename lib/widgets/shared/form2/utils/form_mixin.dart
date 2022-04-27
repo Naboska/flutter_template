@@ -5,12 +5,14 @@ mixin FormMixin {
   final FormStateSubject _formState = FormStateSubject();
 
   FormValidationHandler? _validation;
+  FormValues? _initialValues;
 
   FormFieldSubject _register({required String name}) {
     FormFieldSubject? field = _fields.getField(name);
 
     if (field == null) {
-      field = _fields.createField(name: name);
+      final initialValue = _initialValues?[name];
+      field = _fields.createField(name: name, initialValue: initialValue);
 
       field.subscribe((fieldState, oldFieldState) {
         if (field!.isDirty) _afterFieldUpdate(fieldState, oldFieldState);

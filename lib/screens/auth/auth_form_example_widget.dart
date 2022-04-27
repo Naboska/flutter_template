@@ -1,4 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_template/widgets/shared/fields/form_input_2/form_input_widget.dart';
 import 'package:flutter_template/widgets/shared/form2/form.dart';
@@ -29,6 +31,7 @@ class AuthFormExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormWidget(
+        initialValues: const {'test1': '123123', 'test6': Test()},
         validation: _validation,
         onSubmit: _onFormSubmit,
         builder: (formContext, buildContext) {
@@ -38,6 +41,24 @@ class AuthFormExample extends StatelessWidget {
             const FormInputWidget(name: 'test2', label: 'test2'),
             const FormInputWidget(name: 'test3', label: 'test3'),
             const FormInputWidget(name: 'test4', label: 'test4'),
+            FormControllerWidget(
+                name: 'test6',
+                builder: (controller, context) {
+                  final Test? value = controller.fieldState.value;
+
+                  return TextFormField(
+                      decoration: const InputDecoration(label: Text('test6')),
+                      initialValue: value?.count.toString() ?? '',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      onChanged: (value) {
+                        controller.field
+                            .setValue(Test(count: int.parse(value)));
+                        controller.field.handleTouched();
+                      });
+                }),
             FormWatch(
                 watch: const [],
                 builder: (state, formContext, context) {
@@ -60,4 +81,13 @@ class AuthFormExample extends StatelessWidget {
           ]);
         });
   }
+}
+
+class Test extends Equatable {
+  final int count;
+
+  const Test({this.count = 1});
+
+  @override
+  List<Object?> get props => [count];
 }

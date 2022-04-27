@@ -13,9 +13,14 @@ class FormWidget extends StatefulWidget {
   final FormWidgetBuilder builder;
   final FormSubmitHandler? onSubmit;
   final FormValidationHandler? validation;
+  final FormValues? initialValues;
 
   const FormWidget(
-      {Key? key, required this.builder, this.onSubmit, this.validation})
+      {Key? key,
+      required this.builder,
+      this.onSubmit,
+      this.validation,
+      this.initialValues})
       : super(key: key);
 
   static FormContext of(BuildContext context) {

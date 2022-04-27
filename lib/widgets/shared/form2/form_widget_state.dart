@@ -7,6 +7,7 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
   void initState() {
     super.initState();
     _validation = widget.validation;
+    _initialValues = widget.initialValues;
 
     _formContext = FormContext(
       fields: _fields,
