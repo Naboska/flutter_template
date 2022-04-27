@@ -1,4 +1,4 @@
-part of '../../form_widget.dart';
+part of 'form_context.dart';
 
 class FormProvider extends InheritedWidget {
   final FormContext context;

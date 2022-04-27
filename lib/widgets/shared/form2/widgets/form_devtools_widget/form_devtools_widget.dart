@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/widgets/shared/form/form.dart';
+import '../../form.dart';
 
 class FormDevtoolsWidget extends StatefulWidget {
   const FormDevtoolsWidget({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _FormDevtoolsWidgetState extends State<FormDevtoolsWidget> {
             child: FormWatch(
                 formContext: FormWidget.of(context),
                 builder: (state, formContext, context) {
-                  final keys = state.values.keys.toList();
+                  final fields = state.fields.entries.toList();
 
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,16 +39,17 @@ class _FormDevtoolsWidgetState extends State<FormDevtoolsWidget> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, int index) {
-                              final name = keys[index];
+                              final field = fields[index];
 
                               return Accordion(
-                                name: name,
-                                value: state.values[name],
-                                errorMessage: state.errors[name],
-                                isTouched: state.touchedFields[name] == true,
+                                name: field.key,
+                                value: field.value.value,
+                                errorMessage: field.value.errorMessage,
+                                isTouched: field.value.isTouched,
+                                isDirty: field.value.isDirty,
                               );
                             },
-                            itemCount: keys.length)
+                            itemCount: fields.length)
                       ]);
                 }),
           );
@@ -72,6 +73,7 @@ class Accordion extends StatefulWidget {
   final String name;
   final dynamic value;
   final bool isTouched;
+  final bool isDirty;
   final String? errorMessage;
 
   const Accordion({
@@ -79,6 +81,7 @@ class Accordion extends StatefulWidget {
     required this.name,
     this.value,
     required this.isTouched,
+    required this.isDirty,
     this.errorMessage,
   }) : super(key: key);
   @override

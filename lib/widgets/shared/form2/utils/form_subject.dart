@@ -1,31 +1,36 @@
-part of '../form_widget.dart';
+import 'package:flutter/material.dart';
 
-typedef Observer<T> = void Function(T value);
+typedef Observer<T> = void Function(T value, T oldValue);
 
 typedef Subscription = void Function();
 
-class _FormSubject<T> {
+class FormSubject<T> {
   List<Observer<T>> _observers = [];
   late T _state;
+  bool _isDirty = false;
 
   T get state => _state;
+  bool get isDirty => _isDirty;
 
-  _FormSubject(T state) {
+  FormSubject(T state) {
     _state = state;
   }
 
+  @protected
   void next(dynamic nextState) {
+    _isDirty = true;
+    T oldState = state;
     _state = nextState;
 
     for (Observer<T> observer in _observers) {
-      observer(nextState);
+      observer(nextState, oldState);
     }
   }
 
   Subscription subscribe(Observer<T> observer) {
     _observers.add(observer);
 
-    if (_state != null) observer(_state!);
+    if (_state != null) observer(_state!, _state!);
 
     return () => _observers.remove(observer);
   }

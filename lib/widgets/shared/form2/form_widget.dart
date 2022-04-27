@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:equatable/equatable.dart';
+import 'widgets/form_context/form_context.dart';
+import 'utils/form_fields_subject.dart';
+import 'utils/form_field_subject.dart';
+import 'utils/form_state_subject.dart';
+import 'types.dart';
 
-import 'package:flutter_template/utils/is.dart';
-
-part 'utils/form_subject.dart';
 part 'utils/form_mixin.dart';
-part 'utils/form_subscribe_controller.dart';
-part 'widgets/form_context/form_provider.dart';
-part 'widgets/form_context/form_context.dart';
 part 'form_widget_state.dart';
-part 'form_state.dart';
-part 'types.dart';
 
 class FormWidget extends StatefulWidget {
-  final TFormWidgetBuilder builder;
-  final TFormSubmitHandler? onSubmit;
-  final TFormValidation? validation;
+  final FormWidgetBuilder builder;
+  final FormSubmitHandler? onSubmit;
+  final FormValidationHandler? validation;
 
   const FormWidget(
       {Key? key, required this.builder, this.onSubmit, this.validation})
@@ -25,6 +21,7 @@ class FormWidget extends StatefulWidget {
   static FormContext of(BuildContext context) {
     final ctx = context.getElementForInheritedWidgetOfExactType<FormProvider>();
     final provider = ctx?.widget as FormProvider;
+
     return provider.context;
   }
 

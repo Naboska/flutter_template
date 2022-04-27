@@ -10,8 +10,6 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
 
     _formContext = FormContext(
       fields: _fields,
-      errors: _errors,
-      touchedFields: _touchedFields,
       formState: _formState,
       register: _register,
       handleSubmit: _handleSubmit,
@@ -24,36 +22,20 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
   @override
   void dispose() {
     _fields.state.forEach((_, subject) => subject.close());
+    _fields.close();
     _formState.close();
-    _errors.close();
 
     super.dispose();
   }
 
-  void _handleSubmit() async {
+  Future<void> _handleSubmit() async {
     final Map<String, dynamic> values = _getValues();
+    final VoidCallback handleStopSubmitting = _formState.handleSubmitting();
+    final bool isValid = await _triggerValidate();
 
-    _formState.next(_formState.state
-        .copyWith(isDirty: true, isValid: true, isSubmitting: true));
+    if (isValid && widget.onSubmit != null) await widget.onSubmit!(values);
 
-    final Map<String, String> validate =
-        !isNil(widget.validation) ? await widget.validation!(values) : {};
-    final bool isValid = validate.isEmpty;
-
-    if (isValid) {
-      if (!isNil(widget.onSubmit) && isValid) await widget.onSubmit!(values);
-
-      _formState.next(
-          _formState.state.copyWith(isSubmitting: false, isSubmitted: true));
-    } else {
-      _errors.next(validate);
-
-      _formState.next(_formState.state.copyWith(
-          isDirty: true,
-          isSubmitted: true,
-          isSubmitting: false,
-          isValid: false));
-    }
+    handleStopSubmitting();
   }
 
   @override
