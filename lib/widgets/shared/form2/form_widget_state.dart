@@ -13,6 +13,7 @@ class _FormWidgetState extends State<FormWidget> with FormMixin {
       fields: _fields,
       formState: _formState,
       register: _register,
+      reset: _reset,
       handleSubmit: _handleSubmit,
       getValues: _getValues,
       setValue: _setValue,

@@ -11,6 +11,7 @@ class FormContext {
   final FormStateSubject formState;
   final FormRegisterHandler register;
   final VoidCallback handleSubmit;
+  final VoidCallback reset;
   final FormGetValuesHandler getValues;
   final FormSetValueHandler setValue;
   final FormSetErrorHandler setError;
@@ -18,6 +19,7 @@ class FormContext {
   const FormContext(
       {required this.fields,
       required this.formState,
+      required this.reset,
       required this.register,
       required this.handleSubmit,
       required this.getValues,

@@ -42,9 +42,13 @@ class FormStateSubject extends FormSubject<FormStateValues> {
     return () => next(state.copyWith(isSubmitted: true, isSubmitting: false));
   }
 
-  setValid(bool isValid) {
+  void setValid(bool isValid) {
     if (state.isValid == isValid) return;
 
     next(state.copyWith(isValid: isValid));
+  }
+
+  void resetForm() {
+    reset(const FormStateValues());
   }
 }

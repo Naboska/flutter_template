@@ -59,24 +59,35 @@ class AuthFormExample extends StatelessWidget {
                         controller.field.handleTouched();
                       });
                 }),
+            const SizedBox(height: 12),
             FormWatch(
                 watch: const [],
                 builder: (state, formContext, context) {
                   final bool isLoading = state.formState.isSubmitting;
                   final bool isSubmitted = state.formState.isSubmitted;
+                  final bool isDirty = state.formState.isDirty;
                   final bool isValid = state.formState.isValid;
                   final bool disabled = isLoading || (isSubmitted && !isValid);
 
-                  return ElevatedButton(
-                      onPressed: !disabled ? formContext.handleSubmit : null,
-                      child: isLoading
-                          ? const SizedBox(
-                              width: 12,
-                              height: 12,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ))
-                          : const Text('Submit'));
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: isDirty ? formContext.reset : null,
+                            child: const Text('Reset')),
+                        const SizedBox(width: 6),
+                        ElevatedButton(
+                            onPressed:
+                                !disabled ? formContext.handleSubmit : null,
+                            child: isLoading
+                                ? const SizedBox(
+                                    width: 12,
+                                    height: 12,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ))
+                                : const Text('Submit'))
+                      ]);
                 }),
           ]);
         });

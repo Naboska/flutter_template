@@ -3,6 +3,7 @@ part of 'form_controller_widget.dart';
 class FormControllerState<T extends FormControllerWidget> extends State<T>
     with FormControllerStateMixin {
   final _subscriptionController = FormSubscribeController();
+  bool _isInitialized = false;
 
   @protected
   @override
@@ -18,6 +19,8 @@ class FormControllerState<T extends FormControllerWidget> extends State<T>
     _subscriptionController.subscribe(field, _fieldStateListener);
 
     if (widget.onInit != null) widget.onInit!(getController());
+
+    _isInitialized = true;
   }
 
   @protected
@@ -31,18 +34,28 @@ class FormControllerState<T extends FormControllerWidget> extends State<T>
   }
 
   @protected
-  @override
-  void didUpdateWidget(covariant T oldWidget) {
-    if (widget.onInit != null) widget.onUpdate!(getController());
-    super.didUpdateWidget(oldWidget);
+  void didUpdateController(
+      FormController controller, FormController oldController) {
+    if (widget.onInit != null) widget.onUpdate!(controller, oldController);
   }
 
   void _formStateListener(FormStateValues values, _) {
-    setState(() => formState = values);
+    _updateController(() => formState = values);
   }
 
   void _fieldStateListener(FormFieldStateValues values, _) {
-    setState(() => fieldState = values);
+    _updateController(() => fieldState = values);
+  }
+
+  void _updateController(VoidCallback updateValues) {
+    if (_isInitialized) {
+      final FormController oldController = getController();
+      updateValues();
+      didUpdateController(getController(), oldController);
+      setState(noop);
+    } else {
+      setState(updateValues);
+    }
   }
 
   @override

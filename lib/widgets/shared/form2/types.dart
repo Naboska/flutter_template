@@ -5,6 +5,7 @@ import 'utils/form_field_subject.dart';
 
 typedef FormErrorValues = Map<String, String>;
 typedef FormValues = Map<String, dynamic>;
+typedef FormFields = Map<String, FormFieldSubject>;
 
 typedef FormWidgetBuilder = Widget Function(
     FormContext formContext, BuildContext buildContext);

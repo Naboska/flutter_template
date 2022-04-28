@@ -14,37 +14,38 @@ mixin FormMixin {
       final initialValue = _initialValues?[name];
       field = _fields.createField(name: name, initialValue: initialValue);
 
-      field.subscribe((fieldState, oldFieldState) {
-        if (field!.isDirty) _afterFieldUpdate(fieldState, oldFieldState);
+      field.subscribe((newField, oldField) {
+        if (field!.isDirty) {
+          final bool isValueChanged = newField.value != oldField.value;
+          final bool isTouched = newField.isTouched != oldField.isTouched;
+
+          _formState.handleDirty();
+          if (isValueChanged || isTouched) _triggerValidate(name: name);
+        }
       });
 
-      Future.microtask(_fields.notifyForm);
+      Future.microtask(_fields.notify);
     }
 
     return field;
   }
 
-  void _afterFieldUpdate(FormFieldStateValues state, FormFieldStateValues old) {
-    _formState.handleDirty();
-
-    if ((state.value != old.value) || (state.isTouched != old.isTouched)) {
-      _triggerValidate();
-    }
-  }
-
-  Future<bool> _triggerValidate() async {
+  Future<bool> _triggerValidate({String? name}) async {
     if (_validation == null) return true;
 
     final FormValues values = _getValues();
     final FormErrorValues errors = await _validation!(values);
-    final bool isValid = errors.isEmpty;
+    final bool isValid = name == null ? errors.isEmpty : errors[name] == null;
+
+    if (name == null) {
+      for (String fieldName in _fields.state.keys) {
+        _setError(name: fieldName, message: errors[fieldName]);
+      }
+    } else {
+      _setError(name: name, message: errors[name]);
+    }
 
     _formState.setValid(isValid);
-
-    for (String fieldName in _fields.state.keys) {
-      final String? error = errors[fieldName];
-      _setError(name: fieldName, message: error);
-    }
 
     return isValid;
   }
@@ -65,5 +66,10 @@ mixin FormMixin {
     final field = _register(name: name);
 
     field.setError(message);
+  }
+
+  void _reset() {
+    _fields.getFields().forEach((_, field) => field.resetField());
+    _formState.resetForm();
   }
 }

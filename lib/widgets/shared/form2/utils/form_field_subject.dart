@@ -29,7 +29,9 @@ class FormFieldStateValues<T> extends Equatable {
 }
 
 class FormFieldSubject<T> extends FormSubject<FormFieldStateValues<T>> {
-  FormFieldSubject({T? initialValue})
+  final T? initialValue;
+
+  FormFieldSubject({this.initialValue})
       : super(FormFieldStateValues<T>(value: initialValue));
 
   void setValue(T? value) {
@@ -51,4 +53,6 @@ class FormFieldSubject<T> extends FormSubject<FormFieldStateValues<T>> {
 
     next(state.copyWith(errorMessage: message, value: state.value));
   }
+
+  void resetField() => reset(FormFieldStateValues<T>(value: initialValue));
 }

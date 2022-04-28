@@ -25,17 +25,18 @@ class _FormInputController extends FormControllerState<FormInputWidget> {
   }
 
   @override
-  void didUpdateWidget(covariant FormInputWidget oldWidget) {
+  void didUpdateController(
+      FormController controller, FormController oldController) {
     final String _value = fieldState.value ?? '';
-    final length = _value.length;
 
     if (_controller.text != _value) {
+      final length = _value.length;
       final ts = TextSelection(baseOffset: length, extentOffset: length);
       _controller.text = _value;
       _controller.selection = ts;
     }
 
-    super.didUpdateWidget(oldWidget);
+    super.didUpdateController(controller, oldController);
   }
 
   @override
