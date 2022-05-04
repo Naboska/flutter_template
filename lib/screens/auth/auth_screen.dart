@@ -14,10 +14,12 @@ class AuthScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Title'),
       ),
-      body: Center(
-        child: BlocProvider<UserBloc>(
-          create: (_) => UserBloc(),
-          child: const AuthUserWidget(),
+      body: SingleChildScrollView(
+        child: Center(
+          child: BlocProvider<UserBloc>(
+            create: (_) => UserBloc(),
+            child: const AuthUserWidget(),
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
